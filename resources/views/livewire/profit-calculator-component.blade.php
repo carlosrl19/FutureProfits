@@ -32,18 +32,6 @@
         </div>
     </div>
 
-    <!-- Checkbox para la comisión de terceros -->
-    <div class="row mt-2">
-        <div class="col-sm-12">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" wire:model="apply_third_party_commission" id="applyThirdPartyCommission">
-                <label class="form-check-label" for="applyThirdPartyCommission">
-                    Aplicar comisión a terceros (2.5%)
-                </label>
-            </div>
-        </div>
-    </div>
-
     <!-- Comisión inversionista -->
     <div class="row d-none d-lg-block d-md-block mt-3">
         <div class="col-sm-12">
@@ -78,6 +66,19 @@
                     class="investor_third_profit fw-bold form-control @error('investor_third_profit') is-invalid @enderror">
                 <label for="investor_third_profit">
                     <x-heroicon-o-chart-pie style="width: 20px; height: 20px;" />&nbsp;&nbsp;Comisión terceros (2.5%)
+                </label>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Checkbox para la comisión de terceros -->
+    <div class="row mt-2">
+        <div class="col-sm-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" wire:model="apply_third_party_commission" id="applyThirdPartyCommission">
+                <label class="form-check-label" for="applyThirdPartyCommission">
+                    Aplicar comisión a terceros (2.5%)
                 </label>
             </div>
         </div>
