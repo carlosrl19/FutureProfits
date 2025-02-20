@@ -49,8 +49,17 @@
         }
 
         input[type="number"] {
-            font-size: clamp(0.75rem, 3vw, 0.8rem);
+            font-size: clamp(0.8rem, 3vw, 0.85rem);
             color: #4C585B;
+        }
+
+        .formatted_investment_amount {
+            font-size: clamp(0.8rem, 3vw, 0.9rem) !important;
+            color: #4C585B !important;
+        }
+
+        .form-check-label {
+            font-size: clamp(0.7rem, 3vw, 0.75rem);
         }
 
         .main_div {
@@ -86,8 +95,8 @@
     <div class="d-flex justify-content-center mt-2">
         <div class="card m-4 main_div">
             <div class="card-body">
-                <div class="text-center">
-                    <img class="img-fluid" src="{{ asset('images/logo-system.png') }}" style="min-height: 40px; min-width: 110; max-height: 87px; max-width: 150px" alt="">
+                <div class="text-center mb-3">
+                    <img class="img-fluid" src="{{ asset('images/logo-future-capital.png') }}" style="min-height: 90px; min-width: 110; max-height: 137px; max-width: 150px" alt="">
                 </div>
 
                 <!-- Form Component -->

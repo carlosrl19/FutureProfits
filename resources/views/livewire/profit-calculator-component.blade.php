@@ -2,7 +2,7 @@
     <div class="row mt-2">
         <div class="col-12">
             <div class="form-floating">
-                <input type="number" wire:model="investment_amount" class="form-control @error('investment_amount') is-invalid @enderror" step="0.01" min="0">
+                <input type="text" wire:model.defer="formatted_investment_amount" class="formatted_investment_amount form-control @error('investment_amount') is-invalid @enderror" oninput="formatInput(this)">
                 <label for="investment_amount">
                     <x-heroicon-o-banknotes style="width: 20px; height: 20px;" />&nbsp;&nbsp;Monto inversión <span class="text-danger">*</span>
                 </label>
@@ -32,25 +32,89 @@
         </div>
     </div>
 
-    <!-- Ganancia total -->
+    <!-- Checkbox para la comisión de terceros -->
     <div class="row mt-2">
         <div class="col-sm-12">
-            <div class="form-floating">
-                <input type="text" disabled wire:model.defer="investment_total_profits" readonly class="fw-bold form-control @error('investment_total_profits') is-invalid @enderror">
-                <label for="investment_total_profits">
-                    <x-heroicon-o-presentation-chart-line style="width: 20px; height: 20px;" />&nbsp;&nbsp;Ganancia total
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" wire:model="apply_third_party_commission" id="applyThirdPartyCommission">
+                <label class="form-check-label" for="applyThirdPartyCommission">
+                    Aplicar comisión a terceros (2.5%)
                 </label>
             </div>
         </div>
     </div>
 
-    <!-- Ganancia diaria -->
-    <div class="row mt-2">
+    <!-- Comisión inversionista -->
+    <div class="row d-none d-lg-block d-md-block mt-3">
         <div class="col-sm-12">
             <div class="form-floating">
-                <input type="text" disabled wire:model.defer="investment_total_profit_per_day" readonly class="fw-bold form-control @error('investment_total_profit_per_day') is-invalid @enderror">
-                <label for="investment_total_profit_per_day">
-                    <x-heroicon-o-presentation-chart-line style="width: 20px; height: 20px;" />&nbsp;&nbsp;Ganancia diaria
+                <input type="text" disabled wire:model.defer="investor_profit"
+                    class="fw-bold form-control @error('investor_profit') is-invalid @enderror">
+                <label for="investor_profit">
+                    <x-heroicon-o-user style="width: 20px; height: 20px;" />&nbsp;&nbsp;Comisión inversor
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Este div se mostrará solo en pantallas sm -->
+    <div class="row d-sm-block d-lg-none" style="margin-top: 7%">
+        <div class="col-sm-12">
+            <div class="form-floating">
+                <input type="text" disabled wire:model.defer="investor_profit"
+                    class="fw-bold form-control @error('investor_profit') is-invalid @enderror">
+                <label for="investor_profit">
+                    <x-heroicon-o-user style="width: 20px; height: 20px;" />&nbsp;&nbsp;Comisión inversor
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comisión terceros -->
+    <div class="row d-none d-lg-block d-md-block mt-4">
+        <div class="col-sm-12">
+            <div class="form-floating">
+                <input type="text" disabled wire:model.defer="investor_third_profit"
+                    class="investor_third_profit fw-bold form-control @error('investor_third_profit') is-invalid @enderror">
+                <label for="investor_third_profit">
+                    <x-heroicon-o-chart-pie style="width: 20px; height: 20px;" />&nbsp;&nbsp;Comisión terceros (2.5%)
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Este div se mostrará solo en pantallas sm -->
+    <div class="row d-sm-block d-lg-none" style="margin-top: 11%">
+        <div class="col-sm-12">
+            <div class="form-floating">
+                <input type="text" disabled wire:model.defer="investor_third_profit"
+                    class="fw-bold form-control @error('investor_third_profit') is-invalid @enderror">
+                <label for="investor_third_profit">
+                    <x-heroicon-o-chart-pie style="width: 20px; height: 20px;" />&nbsp;&nbsp;Comisión terceros (2.5%)
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ganancia FCE -->
+    <div class="row d-none d-lg-block d-md-block mt-4">
+        <div class="col-sm-12">
+            <div class="form-floating">
+                <input type="text" disabled wire:model.defer="fce_total" readonly class="fw-bold form-control @error('investment_total_profit_per_day') is-invalid @enderror">
+                <label for="fce_total">
+                    <x-heroicon-o-circle-stack style="width: 20px; height: 20px;" />&nbsp;&nbsp;FCE (5%)
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Este div se mostrará solo en pantallas sm -->
+    <div class="row d-sm-block d-lg-none" style="margin-top: 14%">
+        <div class="col-sm-12">
+            <div class="form-floating">
+                <input type="text" disabled wire:model.defer="fce_total" readonly class="fw-bold form-control @error('investment_total_profit_per_day') is-invalid @enderror">
+                <label for="fce_total">
+                    <x-heroicon-o-circle-stack style="width: 20px; height: 20px;" />&nbsp;&nbsp;FCE (5%)
                 </label>
             </div>
         </div>
@@ -78,4 +142,23 @@
             </button>
         </div>
     </div>
+
+    <script>
+        function formatInput(input) {
+            let value = input.value.replace(/[^0-9.]/g, ''); // Elimina caracteres no numéricos
+            if (value) {
+                let parts = value.split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Agrega separadores de miles
+
+                // Si hay partes decimales, asegúrate de que sólo se mantengan dos decimales
+                if (parts[1]) {
+                    parts[1] = parts[1].substring(0, 2); // Limitar a dos decimales
+                }
+                input.value = parts.join('.');
+            } else {
+                input.value = '';
+            }
+        }
+    </script>
+
 </div>
